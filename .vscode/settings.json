@@ -1,0 +1,5 @@
+{
+  "indentRainbow.indicatorStyle": "light",
+  "indentRainbow.excludedLanguages": ["plaintext"],
+  "indentRainbow.indentSetter": {}
+}
