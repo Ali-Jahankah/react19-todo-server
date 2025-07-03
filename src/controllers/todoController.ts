@@ -1,7 +1,7 @@
 import { ITodoCreateInput } from './../types/todos';
 import { Request, Response } from 'express';
 import prisma from '../prisma/client';
-import { Prisma, Todo } from '../generated/prisma';
+import { Prisma, Todo } from '@prisma/client';
 export const getTodos = async (
   _req: Request,
   res: Response<Todo[] | { error: string }>
