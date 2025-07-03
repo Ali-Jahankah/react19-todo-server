@@ -1,9 +1,7 @@
 node_modules
-.env
-.vscode
-/dist
-.DS_Store
 Dockerfile
 .git
 .gitignore
 *.md
+test
+__tests__
