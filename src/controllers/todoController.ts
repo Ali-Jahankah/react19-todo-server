@@ -3,12 +3,33 @@ import { Request, Response } from 'express';
 import prisma from '../prisma/client';
 import { Prisma, Todo } from '@prisma/client';
 export const getTodos = async (
-  _req: Request,
-  res: Response<Todo[] | { error: string }>
+  req: Request<{}, {}, {}, { page?: string; limit?: string }>,
+  res: Response<
+    | {
+        todos: Todo[];
+        totalCount: number;
+        totalPages: number;
+        currentPage: number;
+      }
+    | { error: string }
+  >
 ): Promise<void> => {
   try {
-    const todos = await prisma.todo.findMany();
-    res.json(todos);
+    const page: number = parseInt((req.query.page as string) || '1', 10);
+    const limit: number = parseInt((req.query.limit as string) || '10', 10);
+    const skip: number = (page - 1) * limit;
+
+    const [todos, count] = await Promise.all([
+      prisma.todo.findMany({
+        skip,
+        take: limit,
+        orderBy: { CreatedAt: 'desc' }
+      }),
+      prisma.todo.count()
+    ]);
+    const totalPages: number = Math.ceil(count / limit);
+
+    res.json({ todos, totalCount: count, totalPages, currentPage: page });
   } catch (error) {
     console.log('Failed to fetch todos', error);
     res
