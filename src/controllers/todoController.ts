@@ -22,7 +22,6 @@ export const createTodo = async (
 ): Promise<void> => {
   try {
     const { title, description, date, completed = false } = req.body;
-    console.log(typeof completed);
     if (!title || !description || !date) {
       res.status(400).json({ error: 'Missing required fields' });
       return;
